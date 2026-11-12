@@ -1,5 +1,5 @@
 // Bettbox Android 全局覆写脚本
-// Version: 2026.11.11-bettbox-premium-primary-v1
+// Version: 2026.11.11-bettbox-premium-primary-v1.1
 // Adapted from skullvek/Mihomo-RouteKit commit 760a342e91568167ee608a6fb4a6b721b65f5a76.
 // BM_* rules are downloaded from blackmatrix7/ios_rule_script; custom patches stay on RouteKit.
 // 在 Bettbox 选择精品机场订阅，再在本机填写经济机场 Clash/Mihomo YAML 订阅链接。
@@ -612,9 +612,11 @@ function main(config) {
     ...REGION_GROUPS
   ];
   // AI 组首次默认选中「全球手动」，与 README 结构图一致；仍不提供 DIRECT。
-  const aiSelect = (name, icon) => ({
+  const preferredRegionOrManual = (name) =>
+    REGION_GROUPS.includes(name) ? name : "全球手动";
+  const aiSelect = (name, icon, defaultSelected = "全球手动") => ({
     ...select(name, icon, AI_OPTIONS),
-    "default-selected": "全球手动"
+    "default-selected": defaultSelected
   });
 
   // 普通国际服务允许用户显式选择 DIRECT。
@@ -724,18 +726,18 @@ function main(config) {
     // 2. AI：强制代理，无 DIRECT；首次默认「全球手动」
     aiSelect("ChatGPT", ICON.chatgpt),
     aiSelect("Claude", ICON.claude),
-    aiSelect("Gemini / NotebookLM", ICON.gemini),
+    aiSelect("Gemini / NotebookLM", ICON.gemini, preferredRegionOrManual("日本聚合")),
 
     // 3. 常用国际服务
     serviceSelect("Google", ICON.google),
-    serviceSelect("GitHub", ICON.github),
+    serviceSelect("GitHub", ICON.github, "经济机场"),
     serviceSelect("社交媒体", ICON.x),
-    serviceSelect("YouTube", ICON.youtube),
+    serviceSelect("YouTube", ICON.youtube, preferredRegionOrManual("新加坡聚合")),
     serviceSelect("流媒体", ICON.media),
     serviceSelect("TikTok", ICON.media),
-    serviceSelect("Telegram", ICON.telegram),
-    serviceSelect("WhatsApp", ICON.whatsapp),
-    serviceSelect("开发工具（Docker/npm等）", ICON.github),
+    serviceSelect("Telegram", ICON.telegram, preferredRegionOrManual("新加坡聚合")),
+    serviceSelect("WhatsApp", ICON.whatsapp, preferredRegionOrManual("新加坡聚合")),
+    serviceSelect("开发工具（Docker/npm等）", ICON.github, "经济机场"),
     serviceSelect("Discord / Slack", ICON.telegram),
     // Microsoft / Apple / 游戏平台首次默认 DIRECT，其余七个服务组默认「全球手动」。
     serviceSelect("Microsoft", ICON.microsoft, "DIRECT"),
