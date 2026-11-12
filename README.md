@@ -1,4 +1,4 @@
-# kkmihomo-rules
+# kkrules
 
 个人维护的 Clash Verge Rev 扩展脚本：[查看脚本](./Clash-Verge-Rev-RouteKit-Premium-Primary-v4.js)。
 
